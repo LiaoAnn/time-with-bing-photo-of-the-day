@@ -64,4 +64,4 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 
 _Keep in mind that the above URL is on a free plan and has limited resources. If you have the technical ability, I would recommend deploying your own instance. Netlify has a generous free plan. It takes less than a minute._
 
-[![](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/sindresorhus/plash-bing-photo-of-the-day)
+[![](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/LiaoAnn/time-with-bing-photo-of-the-day)
