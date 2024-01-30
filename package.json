@@ -1,38 +1,51 @@
 {
-  "name": "time",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev -p 1234",
-    "build": "next build",
-    "start": "next start"
+  "name": "my-qwik-empty-starter",
+  "description": "App with Routing built-in ready to create your app",
+  "engines": {
+    "node": ">=15.0.0"
   },
-  "dependencies": {
-    "is-hexcolor": "^1.0.0",
-    "next": "^14.0.1",
-    "nice-color-palettes": "^3.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+  "private": true,
+  "trustedDependencies": [
+    "sharp"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "qwik build",
+    "build.client": "vite build",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.server": "vite build -c adapters/netlify-edge/vite.config.ts",
+    "build.types": "tsc --incremental --noEmit",
+    "deploy": "netlify deploy --build",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "format": "prettier --write .",
+    "format.check": "prettier --check .",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "preview": "qwik build preview && vite preview --open",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik"
   },
   "devDependencies": {
-    "@types/node": "^13.1.6",
-    "@types/react": "^16.9.17",
-    "husky": "*",
-    "prettier": "*",
-    "pretty-quick": "*",
-    "typescript": "^4.3.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "tabWidth": 2
-  },
-  "engines": {
-    "node": "18"
+    "@builder.io/qwik": "^1.4.2",
+    "@builder.io/qwik-city": "^1.4.2",
+    "@netlify/edge-functions": "^2.0.0",
+    "@types/eslint": "^8.56.2",
+    "@types/node": "^20.11.6",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "eslint-plugin-qwik": "^1.4.2",
+    "is-hexcolor": "^1.0.0",
+    "netlify-cli": "^15.0.0",
+    "nice-color-palettes": "^2.0.0",
+    "postcss": "^8.4.33",
+    "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.4",
+    "tailwindcss": "^3.3.3",
+    "typescript": "5.3.3",
+    "undici": "*",
+    "vite": "^5.0.12",
+    "vite-tsconfig-paths": "^4.2.1"
   }
 }
