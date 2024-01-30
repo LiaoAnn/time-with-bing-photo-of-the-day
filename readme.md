@@ -1,8 +1,6 @@
 # Time with Bing Photo of the Day
 
-Fork from [time](https://github.com/pablopunk/time)
-
-Integrate with [plash-bing-photo-of-the-day](https://github.com/sindresorhus/plash-bing-photo-of-the-day)
+Fork from [time](https://github.com/pablopunk/time) and integrate with [plash-bing-photo-of-the-day](https://github.com/sindresorhus/plash-bing-photo-of-the-day), but I can't get the photo from Bing Photo of the Day after integration, because Next is SSR and it can't using `/api` to get the url from the server side. So I using [Qwik](https://qwik.dev/) to refactor it.
 
 > https://time-with-bing-photo-of-the-day.netlify.app
 
@@ -47,8 +45,8 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
   - [`?format=12`](https://time-with-bing-photo-of-the-day.netlify.app/?format=12)
 - `pad`: Single digit hours will be padded with a 0: 9:41 will be shown as 09:41.
   - [`?pad`](https://time-with-bing-photo-of-the-day.netlify.app/?pad)
-- `useBingPhoto`: It will cover the setting of `bg`, and it will use a photo from Bing Photo of the day.
-  - [`?useBingPhoto`](https://time-with-bing-photo-of-the-day.netlify.app/?useBingPhoto)
+- `bgImage`: It will cover the setting of `bg`, and it will use a photo from Bing Photo of the day.
+  - [`?bgImage`](https://time-with-bing-photo-of-the-day.netlify.app/?useBingPhoto)
 
 ## More Examples
 
