@@ -5,7 +5,7 @@ import {
   useSignal,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import { useLocation, type DocumentHead } from "@builder.io/qwik-city";
+import { type DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
 import isHexColor from "is-hexcolor";
 import palettes from "nice-color-palettes";
 
@@ -57,13 +57,13 @@ const getFlexPositions = (props: SearchParams) => {
   return flexPosition;
 };
 
-export default component$(() => {
-  const location = useLocation();
-  const searchParams = useComputed$<SearchParams>(() => {
-    const params = new URLSearchParams(location.url.search);
-    const font =
-      params.get("font") ||
-      `system-ui,
+export const useParams = routeLoader$(async (requestEvent) => {
+  const { url } = requestEvent;
+  const params = url.searchParams;
+
+  const font =
+    params.get("font") ||
+    `system-ui,
     -apple-system,
     'Segoe UI',
     Roboto,
@@ -72,62 +72,63 @@ export default component$(() => {
     sans-serif,
     'Apple Color Emoji',
     'Segoe UI Emoji'`;
-    let bg = params.get("bg")
-      ? isHexColor(`#${params.get("bg")}`)
-        ? `#${params.get("bg")}`
-        : (params.get("bg") as string)
-      : "black";
-    let fg = params.get("fg")
-      ? isHexColor(`#${params.get("fg")}`)
-        ? `#${params.get("fg")}`
-        : (params.get("fg") as string)
-      : "royalblue";
-    const fontSize = params.get("fontSize") || "10em";
-    const position = (params.get("position") || "center") as Position;
-    const seconds = params.get("seconds") !== null;
-    const randomColors = params.get("randomColors") !== null;
-    const showLink = params.get("showLink") !== null;
-    const blink = params.get("blink") !== null;
-    const format = (params.get("format") || 24) as 12 | 24;
-    const pad = params.get("pad") !== null;
-    const bgImage = params.get("bgImage") !== null;
+  let bg = params.get("bg")
+    ? isHexColor(`#${params.get("bg")}`)
+      ? `#${params.get("bg")}`
+      : (params.get("bg") as string)
+    : "black";
+  let fg = params.get("fg")
+    ? isHexColor(`#${params.get("fg")}`)
+      ? `#${params.get("fg")}`
+      : (params.get("fg") as string)
+    : "royalblue";
+  const fontSize = params.get("fontSize") || "10em";
+  const position = (params.get("position") || "center") as Position;
+  const seconds = params.get("seconds") !== null;
+  const randomColors = params.get("randomColors") !== null;
+  const showLink = params.get("showLink") !== null;
+  const blink = params.get("blink") !== null;
+  const format = (params.get("format") || 24) as 12 | 24;
+  const pad = params.get("pad") !== null;
+  const bgImage = params.get("bgImage") !== null;
 
-    if (randomColors) {
-      const palette = palettes[Math.ceil(Math.random() * palettes.length)];
-      fg = palette[0];
-      bg = palette[palette.length - 1];
-    }
+  if (randomColors) {
+    const palette = palettes[Math.ceil(Math.random() * palettes.length)];
+    fg = palette[0];
+    bg = palette[palette.length - 1];
+  }
 
-    return {
-      seconds,
-      randomColors,
-      fg,
-      bg,
-      font,
-      fontSize,
-      showLink,
-      blink,
-      position,
-      format,
-      pad,
-      bgImage,
-    };
-  });
+  return {
+    seconds,
+    randomColors,
+    fg,
+    bg,
+    font,
+    fontSize,
+    showLink,
+    blink,
+    position,
+    format,
+    pad,
+    bgImage,
+  };
+});
 
+export default component$(() => {
+  const searchParams = useParams();
   const bingPhotoUrl = useSignal<string | undefined>(undefined);
-  const getBingPhotoUrl = $(async () => {
-    const url = await fetch(`/api`).then((res) => res.text());
-    return url;
-  });
+
   useVisibleTask$(({ cleanup }) => {
     const setUrl = async () => {
-      if (searchParams.value.bgImage) {
-        bingPhotoUrl.value = await getBingPhotoUrl();
-      }
+      const res = await fetch("/api");
+      const imageUrl = await res.text();
+      bingPhotoUrl.value = imageUrl;
     };
-    setUrl();
-    const interval = setInterval(setUrl, 1000 * 60 * 60 * 6); // 6 hours
-    cleanup(() => clearInterval(interval));
+    if (searchParams.value.bgImage) {
+      setUrl();
+      const interval = setInterval(setUrl, 1000 * 60 * 60 * 6); // 6 hours
+      cleanup(() => clearInterval(interval));
+    }
   });
 
   const currTime = useSignal({ hours: "", minutes: "", seconds: "" });
